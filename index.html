@@ -1,0 +1,41 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Fetch Data by ID</title>
+</head>
+<body>
+  <form id="fetchForm">
+    <label for="idInput">Enter ID:</label>
+    <input type="text" id="idInput" required>
+    <button type="submit">Fetch Data</button>
+  </form>
+
+  <div id="result"></div>
+
+  <script>
+    const fetchForm = document.getElementById('fetchForm');
+    const resultDiv = document.getElementById('result');
+
+    fetchForm.addEventListener('submit', async (event) => {
+      event.preventDefault();
+      const idInput = document.getElementById('idInput');
+      const id = idInput.value;
+
+      try {
+        const response = await fetch(`/products/${id}`);
+        const data = await response.json();
+
+        if (response.ok) {
+          resultDiv.innerHTML = JSON.stringify(data, null, 2);
+        } else {
+          resultDiv.innerHTML = `Error: ${data.message}`;
+        }
+      } catch (error) {
+        resultDiv.innerHTML = `Error: ${error.message}`;
+      }
+    });
+  </script>
+</body>
+</html>
